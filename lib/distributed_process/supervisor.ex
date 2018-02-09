@@ -5,6 +5,7 @@ defmodule DistributedProcess.Supervisor do
 
   def get_worker(id) do
     node = determine_node(id)
+    # starts the child on the remote or local node
     DynamicSupervisor.start_child({__MODULE__, node}, {Worker, [id]})
     |> case do
       {:ok, pid} -> pid
@@ -22,6 +23,7 @@ defmodule DistributedProcess.Supervisor do
   end
 
   defp determine_node(i) do
+    # Take into account the remote + local nodes
     node_count = Node.list() |> length() |> Kernel.+(1)
 
     available_nodes()

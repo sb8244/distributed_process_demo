@@ -5,6 +5,7 @@ defmodule DistributedProcess.Application do
 
   def start(_type, _args) do
     children = [
+      # A Registry provides unique access based on a provided tuple
       {Registry, [keys: :unique, name: DistributedProcess.Worker.get_registry_name()]},
       {DistributedProcess.Supervisor, []}
     ]
